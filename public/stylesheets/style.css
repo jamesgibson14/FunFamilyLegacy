@@ -35,3 +35,19 @@ h1 {
 #articles .article .body {
   background-color: #ffa;
 }
+.article .created_at {
+  display: none;
+}
+.article input[type =text] {
+  width: 490px;
+  margin-left: 16px;
+}
+.article input[type =button],
+.article input[type =submit] {
+  text-align: left;
+  margin-left: 440px;
+}
+.article textarea {
+  width: 490px;
+  height: 90px;
+}
