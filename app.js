@@ -1,8 +1,9 @@
 var express = require('express');
 //var ArticleProvider = require('./articleprovider-memory').ArticleProvider;
 var ArticleProvider = require('./articleprovider-mongodb').ArticleProvider;
-
+var PersonProvider = require('./person-mongodb').PersonProvider;
 var app = module.exports = express.createServer();
+
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -12,6 +13,14 @@ app.configure(function(){
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+	require('reloader')({
+        watchModules: true,
+        onStart: function () {
+            console.log('Started on port: 3000');
+        },
+        onReload: function () {
+            app.listen(3000);
+        }});
 });
 
 app.configure('development', function(){
@@ -23,6 +32,7 @@ app.configure('production', function(){
 });
 
 var articleProvider= new ArticleProvider('localhost', 27017);
+var personProvider= new PersonProvider('localhost', 27017);
 
 app.get('/', function(req, res){
     articleProvider.findAll( function(error,docs){
@@ -46,6 +56,17 @@ app.get('/person/new', function(req, res) {
         title: 'New Person'
     }
     });
+});
+
+app.get('/people', function(req, res) {
+    personProvider.findAll( function(error,docs){
+        res.render('people.jade', { 
+			locals: {
+	            title: 'People',
+	            people:docs
+            }
+        });
+    })
 });
 
 app.get('/blog/:id', function(req, res) {
@@ -78,6 +99,16 @@ app.post('/blog/addComment', function(req, res) {
        });
 });
 
+app.post('/person/new', function(req, res){
+    personProvider.save({
+        firstname: req.param('firstname'),
+        lastname: req.param('lastname'),
+		birthdate: req.param('birthdate')
+    }, function( error, docs) {
+        res.redirect('/people')
+    });
+});
 
-app.listen(80);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+//app.listen(3000);
+//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
