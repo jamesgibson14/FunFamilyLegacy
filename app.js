@@ -13,14 +13,6 @@ app.configure(function(){
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-	require('reloader')({
-        watchModules: true,
-        onStart: function () {
-            console.log('Started on port: 3000');
-        },
-        onReload: function () {
-            app.listen(3000);
-        }});
 });
 
 app.configure('development', function(){
@@ -110,5 +102,5 @@ app.post('/person/new', function(req, res){
 });
 
 
-//app.listen(3000);
-//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(3000);
+console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
