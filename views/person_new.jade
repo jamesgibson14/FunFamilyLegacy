@@ -1,5 +1,5 @@
 h1= title
-form( method="post")
+form( method="post", enctype="multipart/form-data")
     div
         div
             span First Name :
@@ -16,5 +16,8 @@ form( method="post")
         div
             span Maternal Name :
             input(type="text", name="maternalname", id="addmaternalname")
+        div
+            span Upload Image :
+            input(type="file", name="image", id="addimage")
         div#editArticleSubmit
             input(type="submit", value="Send")

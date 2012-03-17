@@ -3,7 +3,7 @@ var express = require('express');
 var ArticleProvider = require('./articleprovider-mongodb').ArticleProvider;
 var PersonProvider = require('./person-mongodb').PersonProvider;
 var app = module.exports = express.createServer();
-
+var format = require('util').format;
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -72,6 +72,20 @@ app.get('/blog/:id', function(req, res) {
     });
 });
 
+app.get('/people/:id', function(req, res) {
+    personProvider.findById(req.params.id, function(error, person) {
+        res.render('blog_show.jade',
+        { locals: {
+            title: person.firstname + ' ' + person.lastname,
+	    birthdate: person.birthdate,
+	    middlename: person.middlename,
+	    maternalname: person.maternalname,
+	    person: person
+        }
+        });
+    });
+});
+
 app.post('/blog/new', function(req, res){
     articleProvider.save({
         title: req.param('title'),
@@ -91,14 +105,22 @@ app.post('/blog/addComment', function(req, res) {
        });
 });
 
-app.post('/person/new', function(req, res){
-    personProvider.save({
+app.post('/person/new', function(req, res,next){
+   /*console.dir(req.form); 
+   personProvider.save({
         firstname: req.param('firstname'),
         lastname: req.param('lastname'),
-		birthdate: req.param('birthdate')
+	birthdate: req.param('birthdate'),
+	middlename: req.param('middlename'),
+	maternalname: req.param('maternalname')
     }, function( error, docs) {
         res.redirect('/people')
-    });
+    });*/
+   res.send(format('\nuploaded %s (%d Kb) to %s as %s'
+    , req.files.image.name
+    , req.files.image.size / 1024 | 0
+    , req.files.image.path
+    , req.body.firstname));
 });
 
 
