@@ -26,7 +26,14 @@ app.configure('production', function(){
 var articleProvider= new ArticleProvider('localhost', 27017);
 var personProvider= new PersonProvider('localhost', 27017);
 
-app.get('/', function(req, res){
+app.get('/', function(req, res){    
+    res.render('login.jade', { 
+	locals: {
+            title: 'Blast in the Past'
+        }
+    });
+});
+app.get('/blogs', function(req, res){
     articleProvider.findAll( function(error,docs){
         res.render('index.jade', { 
 			locals: {
