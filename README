@@ -1,1 +1,14 @@
 This project is to build a Social-Interactive family history website
+
+Back-end architecture
+App language: node.js
+Web server: express
+MVC Framework: backbone.js
+
+Front-end architecture
+App language: node.js
+Templating system: jade
+js file management: require.js
+Dom manipulation: jQuery
+CSS preprocessor: LESS
+MVC Framework: backbone.js
