@@ -43,6 +43,12 @@ app.get('/blogs', function(req, res){
         });
     })
 });
+app.post('/login',function(req, res){
+    //var username = req.param('username');
+    //var password = req.param('password');
+    //var user = personProvider.findone({username:username});
+    //if(user.password == password){you got your password right, redirect to home page}else {this is not a valid password}
+});
 app.get('/blog/new', function(req, res) {
     res.render('blog_new.jade', { locals: {
         title: 'New Post'
