@@ -9,8 +9,11 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
+  
   app.use(express.methodOverride());
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "keyboard cat" }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -27,6 +30,7 @@ var articleProvider= new ArticleProvider('localhost', 27017);
 var personProvider= new PersonProvider('localhost', 27017);
 
 app.get('/', function(req, res){    
+    console.log(req.headers);
     res.render('login.jade', { 
 	locals: {
             title: 'Blast in the Past'
@@ -48,6 +52,7 @@ app.post('/login',function(req, res){
     //var password = req.param('password');
     //var user = personProvider.findone({username:username});
     //if(user.password == password){you got your password right, redirect to home page}else {this is not a valid password}
+    res.redirect('/people');
 });
 app.get('/blog/new', function(req, res) {
     res.render('blog_new.jade', { locals: {
@@ -113,6 +118,7 @@ app.post('/person/new', function(req, res){
         res.redirect('/people')
     });
 });
+
 
 
 app.listen(3000);

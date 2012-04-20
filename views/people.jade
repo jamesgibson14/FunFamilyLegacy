@@ -4,6 +4,7 @@ h1= title
       div.person
         div.created_at= person.created_at
         div.firstname 
-            a(href="/blog/"+person._id.toHexString())!= person.firstname
+            a(href="/people/"+person._id.toHexString())!= person.firstname
         div.lastname= person.lastname
         div.birthdate= person.birthdate
+        .owner= person.owner

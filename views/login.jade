@@ -1,9 +1,11 @@
 h1= title
 p its time to enjoy Family History
 #login
-  #username
-    span Username :
-    input(type="text", name="username", id="txtuser")
-  #key
-    span Password :
-    input(type="password", name="password", id="txtpass")
+  form(action="login",method="post")
+    #username
+      span Username :
+      input(type="text", name="username", id="txtuser")
+    #key
+      span Password :
+      input(type="password", name="password", id="txtpass")
+      input(type="submit")
