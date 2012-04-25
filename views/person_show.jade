@@ -1,13 +1,11 @@
 h1= title
-#people
-    - each person in people
-      div.person
+div.person
+    div.title= person.title
+    div.person
         div.created_at= person.created_at
-        div.firstname
+        div.firstname 
             a(href="/people/"+person._id)!= person.firstname
         div.lastname= person.lastname
         div.birthdate= person.birthdate
         .middlename= person.middlename
         #maternalname= person.maternalname
-        .owner= person.owner
->>>>>>> images
