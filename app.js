@@ -1,6 +1,6 @@
 var express = require('express');
 //var ArticleProvider = require('./articleprovider-memory').ArticleProvider;
-var ArticleProvider = require('./articleprovider-mongodb').ArticleProvider;
+var ArticleProvider = require('./postProvider').ArticleProvider;
 var PersonProvider = require('./person-mongodb').PersonProvider;
 var app = module.exports = express.createServer();
 
@@ -30,7 +30,7 @@ var articleProvider= new ArticleProvider('localhost', 27017);
 var personProvider= new PersonProvider('localhost', 27017);
 
 app.get('/', function(req, res){    
-    console.log(req.headers);
+    //console.log(req.headers);
     res.render('login.jade', { 
 	locals: {
             title: 'Blast in the Past'
@@ -48,9 +48,10 @@ app.get('/blogs', function(req, res){
     })
 });
 app.post('/login',function(req, res){
-    //var username = req.param('username');
-    //var password = req.param('password');
-    //var user = personProvider.findone({username:username});
+    var username = req.param('username');
+    var password = req.param('password');
+    var user = personProvider.findone({username:username});
+    console.log(username,password,user);
     //if(user.password == password){you got your password right, redirect to home page}else {this is not a valid password}
     res.redirect('/people');
 });
