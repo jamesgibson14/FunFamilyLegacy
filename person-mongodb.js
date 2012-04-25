@@ -30,7 +30,17 @@ PersonProvider.prototype.findAll = function(callback) {
       }
     });
 };
-
+//Find one post
+PersonProvider.prototype.findOne = function(username,password, callback) {
+  this.getCollection(function(error, people_collection) {
+      if( error ) callback(error)
+      else {
+		  people_collection.findOne({firstname : username}, function (err, user) {
+		    callback( null, username,password, user )
+		  });
+	  }
+	})
+};
 //findById
 
 PersonProvider.prototype.findById = function(id, callback) {

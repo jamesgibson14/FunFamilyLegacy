@@ -58,6 +58,12 @@ PostProvider.prototype.findAll = function(callback) {
     callback( null, posts )
   });
 };
+//Find one post
+PostProvider.prototype.findOne = function(username,callback) {
+  Post.findOne({username : username}, function (err, posts) {
+    callback( null, posts )
+  });
+};
 
 //Find post by ID
 PostProvider.prototype.findById = function(id, callback) {

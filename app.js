@@ -1,6 +1,6 @@
 var express = require('express');
 //var ArticleProvider = require('./articleprovider-memory').ArticleProvider;
-var ArticleProvider = require('./postProvider').ArticleProvider;
+var ArticleProvider = require('./postProvider').PostProvider;
 var PersonProvider = require('./person-mongodb').PersonProvider;
 var app = module.exports = express.createServer();
 var format = require('util').format;
@@ -50,10 +50,12 @@ app.get('/blogs', function(req, res){
 app.post('/login',function(req, res){
     var username = req.param('username');
     var password = req.param('password');
-    var user = personProvider.findone({username:username});
-    console.log(username,password,user);
+    var user = personProvider.findOne(username, password,function(error,username,password,user){
+    	console.log(username,password,user);
+    });
+    
     //if(user.password == password){you got your password right, redirect to home page}else {this is not a valid password}
-    res.redirect('/people');
+    //res.redirect('/people');
 });
 app.get('/blog/new', function(req, res) {
     res.render('blog_new.jade', { locals: {
@@ -115,7 +117,7 @@ app.post('/blog/new', function(req, res){
 });
 
 app.post('/blog/addComment', function(req, res) {
-    articleProvider.addCommentToArticle(req.param('_id'), {
+    articleProvider.addCommentToPost(req.param('_id'), {
         person: req.param('person'),
         comment: req.param('comment'),
         created_at: new Date()
