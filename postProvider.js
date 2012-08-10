@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/my_blog');
-
+var mongooseTypes = require("mongoose-types")
+,useTimestamps = mongooseTypes.useTimestamps;
+mongooseTypes.loadTypes(mongoose);
+var Email = mongoose.SchemaTypes.Email;
+var Url = mongoose.SchemaTypes.Url;
 var Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId;
 
@@ -9,7 +13,13 @@ var Comments = new Schema({
   , comment : String
   , created_at : Date
 });
-
+var Locations = new Schema({
+	name : String
+});
+var Events = new Schema({
+	name : String
+	,location : [Locations]
+});
 var Post = new Schema({
     author : ObjectId
   , title : String
@@ -17,7 +27,26 @@ var Post = new Schema({
   , created_at : Date
   , comments : [Comments]
 });
+var Pictures = new Schema({
+    Path : String
+  , comments : [Comments]
+  , location : [Locations]
+  , created_at : Date
+});
 
+var Person = new Schema ({
+	firstname : String
+	,lastname : String
+	,birthdate : Date
+	,deathdate : Date
+	,username : String
+	,email : Email
+	,gender : String
+	,owner : String
+	,events : [Events]
+	,pictures : [Pictures]
+});
+Person.plugin(useTimestamps);
 mongoose.model('Post', Post);
 var Post = mongoose.model('Post');
 
@@ -26,6 +55,12 @@ PostProvider = function(){};
 //Find all posts
 PostProvider.prototype.findAll = function(callback) {
   Post.find({}, function (err, posts) {
+    callback( null, posts )
+  });
+};
+//Find one post
+PostProvider.prototype.findOne = function(username,callback) {
+  Post.findOne({username : username}, function (err, posts) {
     callback( null, posts )
   });
 };
