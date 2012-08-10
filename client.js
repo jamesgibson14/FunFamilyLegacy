@@ -1,5 +1,5 @@
 var io = require('socket.io-client');
-var socket = io.connect('http://192.168.1.4');
+var socket = io.connect('http://71.195.221.2:2390');
 socket.on('connect', function () {
   // socket connected
   console.log('connected');
