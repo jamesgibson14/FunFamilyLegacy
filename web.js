@@ -1,7 +1,7 @@
 var express = require('express');
 var chat = require('./controllers/chat.js');
 var io = require('socket.io-client');
-var socket = io.connect('174.52.250.244:2390');
+var socket = io.connect('71.195.221.2:2390');
 var app = express.createServer(express.logger());
 
 app.configure(function () {
@@ -73,9 +73,13 @@ socket.on('connect', function () {
   console.log('socket connected');
 socket.emit('myevent', {msg: 'mike is connected' });
 });
+socket.on('myevent',function(data){
+	console.log(data);
+	socket.broadcast.emit('user connected',data);
+});
 socket.on('user connected', function (data,res,req) {
   // server emitted a custom event
-   console.log('socket customevent');
+   console.log('socket myevent');
    chat.add(data, function (chat) {
     //res.send(chat); //here I need to be able to send something back to the client, either with long-polling or websockets
   }, error);
